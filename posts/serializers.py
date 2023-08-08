@@ -41,9 +41,12 @@ class PostSerializer(ModelSerializer):
         images_data = validated_data.pop("images", [])
         post = Post.objects.create(author=user, **validated_data)
 
+        post_image_instances = []
         for image_data in images_data:
-            print("画像作成")
-            PostImage.objects.create(post=post, **image_data)
+            post_image = PostImage.objects.create(**image_data)
+            post_image_instances.append(post_image)
+
+        post.images.set(post_image_instances)
 
         return post
 

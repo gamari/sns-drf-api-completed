@@ -23,9 +23,6 @@ class PostListCreateView(ListCreateAPIView):
         if user_id is not None:
             queryset = queryset.filter(author__id=user_id)
 
-        for post in queryset:
-            print(post.images.all())
-
         return queryset.order_by("-created_at")
 
 
