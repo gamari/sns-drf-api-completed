@@ -16,7 +16,15 @@ class PostListCreateView(ListCreateAPIView):
         if self.request.method == "GET":
             return [AllowAny()]
         return [IsAuthenticated()]
-    
+
+    def get_queryset(self):
+        queryset = Post.objects.all()
+        user_id = self.request.query_params.get("user_id", None)
+        if user_id is not None:
+            queryset = queryset.filter(author__id == user_id)
+
+        return queryset
+
 
 # 良いね処理
 class LikeCreateDestroyAPIView(CreateAPIView, DestroyAPIView):
@@ -28,7 +36,10 @@ class LikeCreateDestroyAPIView(CreateAPIView, DestroyAPIView):
 
         like, created = Like.objects.get_or_create(user=user, post=post)
         if not created:
-            return Response({"detail": "You've already liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "You've already liked this post."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         return Response({"message": "Liked successfully."})
 
@@ -41,4 +52,7 @@ class LikeCreateDestroyAPIView(CreateAPIView, DestroyAPIView):
             like.delete()
             return Response({"message": "Unliked successfully."})
         else:
-            return Response({"detail": "You haven't liked this post yet."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "You haven't liked this post yet."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )

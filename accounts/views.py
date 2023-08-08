@@ -1,21 +1,26 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView
+from rest_framework.generics import (
+    CreateAPIView,
+    RetrieveUpdateAPIView,
+)
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
-from rest_framework.parsers import MultiPartParser, FormParser
 
 from .models import Account
-from .serializers import AccountSerializer, MeSerializer
+from .serializers import AccountSerializer
 
 
-class AccountDetailView(RetrieveAPIView):
+# Account単体処理
+class AccountRetrieveUpdateView(RetrieveUpdateAPIView):
     queryset = Account.objects.all()
+    # TODO permisonの変更
     permission_classes = [AllowAny]
     serializer_class = AccountSerializer
     lookup_field = "id"
 
 
+# Account複数処理
 class CreateAccountView(CreateAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
@@ -36,7 +41,8 @@ class CreateAccountView(CreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# 認証用ユーザー処理
 class MeView(APIView):
     def get(self, request):
-        serializer = MeSerializer(request.user, context={"request": request})
+        serializer = AccountSerializer(request.user, context={"request": request})
         return Response(serializer.data)

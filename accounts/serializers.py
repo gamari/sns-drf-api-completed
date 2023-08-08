@@ -6,8 +6,20 @@ from .models import Account
 class AccountSerializer(ModelSerializer):
     class Meta:
         model = Account
-        fields = ["id", "user_id", "email", "username", "password", "profile_image"]
-        extra_kwargs = {"password": {"write_only": True}, "email": {"write_only": True}}
+        fields = [
+            "id",
+            "user_id",
+            "email",
+            "bio",
+            "username",
+            "password",
+            "profile_image",
+        ]
+        extra_kwargs = {
+            "password": {"write_only": True, "required": False},
+            "email": {"write_only": True, "required": False},
+            "user_id": {"required": False},
+        }
 
     def create(self, validated_data):
         password = validated_data.pop("password", None)
@@ -24,19 +36,10 @@ class AccountSerializer(ModelSerializer):
         return account
 
     def update(self, instance, validated_data):
-        password = validated_data.pop("password", None)
+        validated_data.pop("password", None)
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
 
-        if password:
-            instance.set_password(password)
         instance.save()
-
         return instance
-
-
-class MeSerializer(ModelSerializer):
-    class Meta:
-        model = Account
-        fields = ["id", "user_id", "email", "username", "profile_image"]

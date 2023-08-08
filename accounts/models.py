@@ -24,6 +24,7 @@ class AccountManager(BaseUserManager):
 
         if extra_fields.get("is_staff") is not True:
             raise ValueError("管理者ユーザはis_staffがtrueである必要があります。")
+
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("管理者ユーザーはis_superuserがtrueである必要があります")
 
