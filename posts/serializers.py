@@ -7,7 +7,13 @@ from rest_framework.serializers import (
 
 from accounts.serializers import AccountSerializer
 
-from .models import Post
+from .models import Post, PostImage
+
+
+class PostImageSerializer(ModelSerializer):
+    class Meta:
+        model = PostImage
+        fields = ("id", "image")
 
 
 class PostSerializer(ModelSerializer):
@@ -15,6 +21,7 @@ class PostSerializer(ModelSerializer):
     content = CharField(max_length=200)
     likes_count = IntegerField(read_only=True)
     is_liked = SerializerMethodField()
+    images = PostImageSerializer(many=True, required=False)
 
     class Meta:
         model = Post
@@ -26,11 +33,17 @@ class PostSerializer(ModelSerializer):
             "author",
             "likes_count",
             "is_liked",
+            "images",
         ]
 
     def create(self, validated_data):
         user = self.context["request"].user
+        images_data = validated_data.pop("images", [])
         post = Post.objects.create(author=user, **validated_data)
+
+        for image_data in images_data:
+            print("画像作成")
+            PostImage.objects.create(post=post, **image_data)
 
         return post
 

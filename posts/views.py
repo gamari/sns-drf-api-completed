@@ -18,10 +18,13 @@ class PostListCreateView(ListCreateAPIView):
         return [IsAuthenticated()]
 
     def get_queryset(self):
-        queryset = Post.objects.all()
+        queryset = Post.objects.all().prefetch_related("images")
         user_id = self.request.query_params.get("user_id", None)
         if user_id is not None:
             queryset = queryset.filter(author__id=user_id)
+
+        for post in queryset:
+            print(post.images.all())
 
         return queryset.order_by("-created_at")
 
