@@ -12,6 +12,20 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    # TODO 追加
+    @property
+    def likes_count(self):
+        return self.like_set.count()
+    
+    def is_liked_by_user(self, user):
+        return self.like_set.filter(user=user).exists()
+
     def __str__(self) -> str:
         return f"[{self.id}]{self.content}"
+
+class Like(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['user', 'post']

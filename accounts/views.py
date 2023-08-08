@@ -1,10 +1,19 @@
-from rest_framework import  status
-from rest_framework.generics import CreateAPIView
+from rest_framework import status
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
+
 from .models import Account
 from .serializers import AccountSerializer, MeSerializer
+
+
+class AccountDetailView(RetrieveAPIView):
+    queryset = Account.objects.all()
+    permission_classes = [AllowAny]
+    serializer_class = AccountSerializer
+    lookup_field = "id"
 
 
 class CreateAccountView(CreateAPIView):
@@ -16,14 +25,18 @@ class CreateAccountView(CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             account = serializer.save()
-            return Response({
-                "user_id": account.user_id,
-                "email": account.email,
-                "username": account.username,
-            }, status=status.HTTP_201_CREATED)
+            return Response(
+                {
+                    "user_id": account.user_id,
+                    "email": account.email,
+                    "username": account.username,
+                },
+                status=status.HTTP_201_CREATED,
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class MeView(APIView):
     def get(self, request):
-        serializer = MeSerializer(request.user, context={'request': request})
+        serializer = MeSerializer(request.user, context={"request": request})
         return Response(serializer.data)
