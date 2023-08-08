@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     # Local
     "accounts",
     "posts",
+    "likes",
 ]
 
 AUTH_USER_MODEL = "accounts.Account"

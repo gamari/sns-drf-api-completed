@@ -19,6 +19,7 @@ urlpatterns = [
     path("test/", TestView.as_view()),
     path("posts/", include("posts.urls")),
     path("accounts/", include("accounts.urls")),
+    path("likes/", include("likes.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
