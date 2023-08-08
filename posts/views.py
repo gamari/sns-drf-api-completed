@@ -21,9 +21,9 @@ class PostListCreateView(ListCreateAPIView):
         queryset = Post.objects.all()
         user_id = self.request.query_params.get("user_id", None)
         if user_id is not None:
-            queryset = queryset.filter(author__id == user_id)
+            queryset = queryset.filter(author__id=user_id)
 
-        return queryset
+        return queryset.order_by("-created_at")
 
 
 # 良いね処理
