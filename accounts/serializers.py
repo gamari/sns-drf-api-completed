@@ -1,9 +1,13 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
+
+from follows.models import Follow
 
 from .models import Account
 
 
 class AccountSerializer(ModelSerializer):
+    is_following = SerializerMethodField()
+
     class Meta:
         model = Account
         fields = [
@@ -14,6 +18,7 @@ class AccountSerializer(ModelSerializer):
             "username",
             "password",
             "profile_image",
+            "is_following",
         ]
         extra_kwargs = {
             "password": {"write_only": True, "required": False},
@@ -43,3 +48,9 @@ class AccountSerializer(ModelSerializer):
 
         instance.save()
         return instance
+
+    def get_is_following(self, obj):
+        user = self.context["request"].user
+        if not user.is_authenticated:
+            return False
+        return Follow.objects.filter(follower=user, following=obj).exists()

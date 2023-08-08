@@ -14,7 +14,6 @@ from .serializers import AccountSerializer
 # Account単体処理
 class AccountRetrieveUpdateView(RetrieveUpdateAPIView):
     queryset = Account.objects.all()
-    # TODO permisonの変更
     permission_classes = [AllowAny]
     serializer_class = AccountSerializer
     lookup_field = "id"
