@@ -22,6 +22,7 @@ class PostSerializer(ModelSerializer):
     likes_count = IntegerField(read_only=True)
     is_liked = SerializerMethodField()
     images = PostImageSerializer(many=True, required=False)
+    replies_count = IntegerField(read_only=True)
 
     class Meta:
         model = Post
@@ -34,6 +35,8 @@ class PostSerializer(ModelSerializer):
             "likes_count",
             "is_liked",
             "images",
+            "reply_to",
+            "replies_count",
         ]
 
     def create(self, validated_data):
