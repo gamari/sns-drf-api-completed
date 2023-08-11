@@ -1,10 +1,18 @@
 from rest_framework.generics import ListCreateAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, BasePermission
 
 from .models import Post
 from .serializers import PostSerializer
 
 from rest_framework.generics import RetrieveDestroyAPIView
+
+
+class IsOwnerOrReadOnly(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in ["GET", "HEAD", "OPTIONS"]:
+            return True
+
+        return obj.author == request.user
 
 
 class PostRetrieveDestroyView(RetrieveDestroyAPIView):
@@ -22,6 +30,9 @@ class PostRetrieveDestroyView(RetrieveDestroyAPIView):
     def get_permissions(self):
         if self.request.method == "GET":
             return [AllowAny()]
+        if self.request.method == "DELETE":
+            return [IsOwnerOrReadOnly()]
+
         return [IsAuthenticated()]
 
 
