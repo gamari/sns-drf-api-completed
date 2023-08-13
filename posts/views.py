@@ -48,6 +48,7 @@ class PostListCreateView(ListCreateAPIView):
             queryset = queryset.filter(author__id=user_id)
 
         reply_to_id = self.request.query_params.get("reply_to", None)
+        print(reply_to_id)
 
         if reply_to_id:
             queryset = queryset.filter(reply_to=reply_to_id)
