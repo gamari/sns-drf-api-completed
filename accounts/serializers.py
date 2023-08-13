@@ -7,6 +7,8 @@ from .models import Account
 
 class AccountSerializer(ModelSerializer):
     is_following = SerializerMethodField()
+    followers_count = SerializerMethodField()
+    following_count = SerializerMethodField()
 
     class Meta:
         model = Account
@@ -19,6 +21,8 @@ class AccountSerializer(ModelSerializer):
             "password",
             "profile_image",
             "is_following",
+            "followers_count",
+            "following_count",
         ]
         extra_kwargs = {
             "password": {"write_only": True, "required": False},
@@ -54,3 +58,9 @@ class AccountSerializer(ModelSerializer):
         if not user.is_authenticated:
             return False
         return Follow.objects.filter(follower=user, following=obj).exists()
+
+    def get_followers_count(self, obj):
+        return obj.get_followers_count()
+
+    def get_following_count(self, obj):
+        return obj.get_following_count()

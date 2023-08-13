@@ -52,3 +52,13 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    def get_followers_count(self):
+        from follows.models import Follow
+
+        return Follow.objects.filter(following=self).count()
+
+    def get_following_count(self):
+        from follows.models import Follow
+
+        return Follow.objects.filter(follower=self).count()

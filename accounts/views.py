@@ -1,8 +1,7 @@
+import random
+
 from rest_framework import status
-from rest_framework.generics import (
-    CreateAPIView,
-    RetrieveUpdateAPIView,
-)
+from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
@@ -45,3 +44,17 @@ class MeView(APIView):
     def get(self, request):
         serializer = AccountSerializer(request.user, context={"request": request})
         return Response(serializer.data)
+
+
+class RecommendedAccountsView(ListAPIView):
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        following_users = user.following.values_list("following", flat=True)
+        return (
+            Account.objects.exclude(id__in=following_users)
+            .exclude(id=user.id)
+            .order_by("?")[:2]
+        )
