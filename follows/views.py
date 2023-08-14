@@ -1,9 +1,8 @@
 from rest_framework.generics import CreateAPIView, DestroyAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from accounts.serializers import AccountSerializer
 
+from accounts.serializers import AccountSerializer
 from follows.models import Follow
 from follows.serializers import FollowSerializer
 from .models import Account
