@@ -12,11 +12,19 @@ class Post(models.Model):
     author = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, help_text="投稿者"
     )
-    content = models.TextField(max_length=10000)
+    content = models.TextField(max_length=10000, null=True, blank=True)
     images = models.ManyToManyField(PostImage, blank=True)
     reply_to = models.ForeignKey(
         "self", null=True, blank=True, on_delete=models.SET_NULL, related_name="replies"
     )
+    repost_of = models.ForeignKey(
+        "self",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="reposts",
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -30,6 +38,9 @@ class Post(models.Model):
 
     def is_liked_by_user(self, user):
         return self.like_set.filter(user=user).exists()
+
+    def is_reposted(self, user):
+        return self.reposts.filter(author=user).exists()
 
     def __str__(self) -> str:
         return f"[{self.id}]{self.content}"

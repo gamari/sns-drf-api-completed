@@ -1,8 +1,11 @@
 from rest_framework.generics import ListCreateAPIView
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
 from rest_framework.permissions import AllowAny, IsAuthenticated, BasePermission
 
 from .models import Post
-from .serializers import PostSerializer
+from .serializers import PostSerializer, RepostSeializer
 
 from rest_framework.generics import RetrieveDestroyAPIView
 
@@ -41,7 +44,7 @@ class PostListCreateView(ListCreateAPIView):
     serializer_class = PostSerializer
 
     def get_queryset(self):
-        queryset = self.queryset.prefetch_related("images")
+        queryset = self.queryset.prefetch_related("images").select_related("repost_of")
 
         user_id = self.request.query_params.get("user_id", None)
         if user_id:
@@ -58,3 +61,18 @@ class PostListCreateView(ListCreateAPIView):
         if self.request.method == "GET":
             return [AllowAny()]
         return [IsAuthenticated()]
+
+
+class RepostAPIView(APIView):
+    def post(self, request, pk):
+        # TODO 判定ロジックを行う
+        # TODO リツイートのリツイートを対象にする
+        original_post = Post.objects.get(pk=pk)
+        user = request.user
+        target = Post.objects.get(pk=original_post.id, author=user)
+        print(target)
+        if target:
+            return Response({"message": "既にリポストしてます。"}, 400)
+        repost = Post.objects.create(repost_of=original_post, author=request.user)
+        serializer = RepostSeializer(instance=repost)
+        return Response(serializer.data, 200)
