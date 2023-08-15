@@ -3,6 +3,7 @@ from rest_framework.serializers import (
     CharField,
     IntegerField,
     SerializerMethodField,
+    PrimaryKeyRelatedField,
 )
 
 from accounts.serializers import AccountSerializer
@@ -49,7 +50,9 @@ class RepostSerializer(BasePostSerializer):
             "likes_count",
             "is_liked",
             "is_reposted",
+            "images",
         ]
+        depth = 2
 
 
 class PostSerializer(BasePostSerializer):
@@ -58,6 +61,7 @@ class PostSerializer(BasePostSerializer):
     images = PostImageSerializer(many=True, required=False)
     replies_count = IntegerField(read_only=True)
     repost_of = RepostSerializer(read_only=True)
+    reply_to = PrimaryKeyRelatedField(queryset=Post.objects.all(), required=False)
 
     class Meta:
         model = Post
@@ -80,6 +84,7 @@ class PostSerializer(BasePostSerializer):
     def create(self, validated_data):
         user = self._get_user_from_context()
         images_data = validated_data.pop("images", [])
+        print(validated_data)
         post = Post.objects.create(author=user, **validated_data)
 
         if "repost_of" not in validated_data:

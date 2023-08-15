@@ -93,7 +93,11 @@ class RepostAPIView(APIView):
         try:
             post = Post.objects.get(pk=pk)
             if post.remove_repost(request.user):
-                return Response(self.MESSAGE_REPOST_REMOVED, status=status.HTTP_200_OK)
+                serializer = RepostSerializer(
+                    instance=post, context={"request": request}
+                )
+
+                return Response(serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response(
                     self.MESSAGE_REPOST_NOT_FOUND, status=status.HTTP_404_NOT_FOUND
