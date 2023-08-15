@@ -1,13 +1,12 @@
-from rest_framework.generics import ListCreateAPIView
+from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.generics import RetrieveDestroyAPIView, ListCreateAPIView
 from rest_framework.response import Response
-
 from rest_framework.permissions import AllowAny, IsAuthenticated, BasePermission
 
-from .models import Post
-from .serializers import PostSerializer, RepostSeializer
 
-from rest_framework.generics import RetrieveDestroyAPIView
+from .models import Post
+from .serializers import PostSerializer, RepostSerializer
 
 
 class IsOwnerOrReadOnly(BasePermission):
@@ -64,15 +63,43 @@ class PostListCreateView(ListCreateAPIView):
 
 
 class RepostAPIView(APIView):
+    MESSAGE_ALREADY_REPOSTED = {"message": "既にリポストしてます。"}
+    MESSAGE_POST_NOT_FOUND = {"message": "ポストが存在しません。"}
+    MESSAGE_REPOST_NOT_FOUND = {"message": "リポストが見つかりません。"}
+    MESSAGE_REPOST_REMOVED = {"message": "リポストを解除しました。"}
+
+    def _get_original_post_or_repost(self, pk):
+        post = Post.objects.get(pk=pk)
+        return post.repost_of if post.repost_of else post
+
     def post(self, request, pk):
-        # TODO 判定ロジックを行う
-        # TODO リツイートのリツイートを対象にする
-        original_post = Post.objects.get(pk=pk)
-        user = request.user
-        target = Post.objects.get(pk=original_post.id, author=user)
-        print(target)
-        if target:
-            return Response({"message": "既にリポストしてます。"}, 400)
-        repost = Post.objects.create(repost_of=original_post, author=request.user)
-        serializer = RepostSeializer(instance=repost)
-        return Response(serializer.data, 200)
+        try:
+            post = Post.objects.get(pk=pk)
+            if Post.objects.filter(repost_of=post, author=request.user).exists():
+                return Response(
+                    self.MESSAGE_ALREADY_REPOSTED, status=status.HTTP_400_BAD_REQUEST
+                )
+
+            repost = post.create_repost(request.user)
+            serializer = RepostSerializer(instance=repost, context={"request": request})
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Post.DoesNotExist:
+            return Response(
+                self.MESSAGE_POST_NOT_FOUND, status=status.HTTP_404_NOT_FOUND
+            )
+
+    def delete(self, request, pk):
+        try:
+            post = Post.objects.get(pk=pk)
+            if post.remove_repost(request.user):
+                return Response(self.MESSAGE_REPOST_REMOVED, status=status.HTTP_200_OK)
+            else:
+                return Response(
+                    self.MESSAGE_REPOST_NOT_FOUND, status=status.HTTP_404_NOT_FOUND
+                )
+
+        except Post.DoesNotExist:
+            return Response(
+                self.MESSAGE_POST_NOT_FOUND, status=status.HTTP_404_NOT_FOUND
+            )

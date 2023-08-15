@@ -28,6 +28,9 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self) -> str:
+        return f"[{self.id}]{self.content}"
+
     @property
     def likes_count(self):
         return self.like_set.count()
@@ -42,5 +45,22 @@ class Post(models.Model):
     def is_reposted(self, user):
         return self.reposts.filter(author=user).exists()
 
-    def __str__(self) -> str:
-        return f"[{self.id}]{self.content}"
+    def create_repost(self, user):
+        if self.repost_of:
+            original_post = self.repost_of
+        else:
+            original_post = self
+
+        return Post.objects.create(repost_of=original_post, author=user)
+
+    def remove_repost(self, user):
+        if self.repost_of:
+            original_post = self.repost_of
+        else:
+            original_post = self
+
+        repost = Post.objects.filter(repost_of=original_post, author=user).first()
+        if repost:
+            repost.delete()
+            return True
+        return False
