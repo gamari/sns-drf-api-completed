@@ -55,6 +55,23 @@ class RepostSerializer(BasePostSerializer):
         depth = 2
 
 
+class ReplySerializer(BasePostSerializer):
+    class Meta:
+        model = Post
+        fields = [
+            "id",
+            "content",
+            "author",
+            "created_at",
+            "updated_at",
+            "likes_count",
+            "is_liked",
+            "is_reposted",
+            "images",
+        ]
+        depth = 2
+
+
 class PostSerializer(BasePostSerializer):
     content = CharField(max_length=200, allow_blank=True, required=False)
     likes_count = IntegerField(read_only=True)
@@ -71,20 +88,20 @@ class PostSerializer(BasePostSerializer):
             "created_at",
             "updated_at",
             "author",
+            "images",
             "likes_count",
             "is_liked",
-            "images",
-            "reply_to",
             "repost_of",
-            "replies_count",
             "is_reposted",
+            "reply_to",
+            "replies_count",
         ]
         depth = 2
 
     def create(self, validated_data):
         user = self._get_user_from_context()
         images_data = validated_data.pop("images", [])
-        print(validated_data)
+
         post = Post.objects.create(author=user, **validated_data)
 
         if "repost_of" not in validated_data:
@@ -94,3 +111,11 @@ class PostSerializer(BasePostSerializer):
             post.images.set(post_image_instances)
 
         return post
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if instance.reply_to:
+            data["reply_to"] = ReplySerializer(
+                instance.reply_to, context={"request": self.context["request"]}
+            ).data
+        return data
