@@ -1,9 +1,12 @@
 from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.generics import RetrieveDestroyAPIView, ListCreateAPIView
+from rest_framework.generics import (
+    ListCreateAPIView,
+    RetrieveDestroyAPIView,
+    ListAPIView,
+)
+from rest_framework.permissions import AllowAny, BasePermission, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated, BasePermission
-
+from rest_framework.views import APIView
 
 from .models import Post
 from .serializers import PostSerializer, RepostSerializer
@@ -60,6 +63,42 @@ class PostListCreateView(ListCreateAPIView):
         if self.request.method == "GET":
             return [AllowAny()]
         return [IsAuthenticated()]
+
+
+class LikedPostListAPIView(ListAPIView):
+    serializer_class = PostSerializer
+    queryset = Post.objects.all()
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        queryset = self.queryset
+        user_id = self.request.query_params.get("user_id", None)
+
+        if not user_id:
+            return []
+
+        # TODO Likeの作成日順で並び替えたい
+
+        liked_posts = queryset.filter(like__user_id=user_id).order_by("-created_at")
+
+        return liked_posts
+
+
+class MediaPostListAPIView(ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get("user_id", None)
+
+        if not user_id:
+            return []
+
+        filtered_posts = Post.objects.filter(images__isnull=False).filter(
+            author=user_id
+        )
+
+        return filtered_posts.order_by("-created_at")
 
 
 class RepostAPIView(APIView):
