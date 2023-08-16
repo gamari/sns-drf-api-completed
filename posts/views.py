@@ -41,26 +41,31 @@ class PostRetrieveDestroyView(RetrieveDestroyAPIView):
         return [IsAuthenticated()]
 
 
-# TODO BaseListAPIViewを作る
-
-
-class PostListCreateView(ListCreateAPIView):
-    queryset = Post.objects.all()
+class BasePostListView(ListAPIView):
     serializer_class = PostSerializer
+
+    def get_user_id_from_request(self):
+        return self.request.query_params.get("user_id", None)
+
+    def order_queryset_by_created_at_desc(self, queryset):
+        return queryset.order_by("-created_at")
+
+
+class PostListCreateView(BasePostListView, ListCreateAPIView):
+    queryset = Post.objects.all()
 
     def get_queryset(self):
         queryset = self.queryset.prefetch_related("images").select_related("repost_of")
 
-        user_id = self.request.query_params.get("user_id", None)
+        user_id = self.get_user_id_from_request()
         if user_id:
             queryset = queryset.filter(author__id=user_id)
 
         reply_to_id = self.request.query_params.get("reply_to", None)
-
         if reply_to_id:
             queryset = queryset.filter(reply_to=reply_to_id)
 
-        return queryset.order_by("-created_at")
+        return self.order_queryset_by_created_at_desc(queryset)
 
     def get_permissions(self):
         if self.request.method == "GET":
@@ -68,40 +73,44 @@ class PostListCreateView(ListCreateAPIView):
         return [IsAuthenticated()]
 
 
-class LikedPostListAPIView(ListAPIView):
-    serializer_class = PostSerializer
+class LikedPostListAPIView(BasePostListView):
     queryset = Post.objects.all()
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        queryset = self.queryset
-        user_id = self.request.query_params.get("user_id", None)
+        user_id = self.get_user_id_from_request()
 
         if not user_id:
             return []
 
-        # TODO Likeの作成日順で並び替えたい
-        print(user_id)
-        liked_posts = queryset.filter(like__user_id=user_id).order_by("-created_at")
-
-        return liked_posts
+        liked_posts = self.queryset.filter(like__user_id=user_id)
+        return self.order_queryset_by_created_at_desc(liked_posts)
 
 
-class MediaPostListAPIView(ListAPIView):
-    serializer_class = PostSerializer
+class MediaPostListAPIView(BasePostListView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        user_id = self.request.query_params.get("user_id", None)
+        user_id = self.get_user_id_from_request()
 
         if not user_id:
             return []
 
-        filtered_posts = Post.objects.filter(images__isnull=False).filter(
-            author=user_id
-        )
+        filtered_posts = Post.objects.filter(images__isnull=False, author=user_id)
+        return self.order_queryset_by_created_at_desc(filtered_posts)
 
-        return filtered_posts.order_by("-created_at")
+
+class RepliedPostListAPIView(BasePostListView):
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user_id = self.get_user_id_from_request()
+
+        if not user_id:
+            return []
+
+        replied_posts = Post.objects.filter(reply_to__isnull=False, author=user_id)
+        return self.order_queryset_by_created_at_desc(replied_posts)
 
 
 class RepostAPIView(APIView):
