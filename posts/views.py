@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 from rest_framework import status
 from rest_framework.generics import (
     ListCreateAPIView,
@@ -44,8 +46,35 @@ class PostRetrieveDestroyView(RetrieveDestroyAPIView):
 class BasePostListView(ListAPIView):
     serializer_class = PostSerializer
 
-    def get_user_id_from_request(self):
+    def get_user_id(self):
         return self.request.query_params.get("user_id", None)
+    
+    def get_search_word(self):
+        return self.request.query_params.get("word", None)
+
+    def filter_by_user_id(self, queryset, user_id):
+        if user_id:
+            queryset = queryset.filter(author__id=user_id)
+        return queryset
+
+    def filter_by_reply_to(self, queryset, reply_to_id):
+        if reply_to_id:
+            queryset = queryset.filter(reply_to=reply_to_id)
+        return queryset
+
+    
+    def filter_by_search(self, queryset, keyword):
+        if keyword:
+            queryset = queryset.filter(
+                Q(content__icontains=keyword)
+            )
+        return queryset
+
+    def filter_by_created_at(self ,queryset, start_date):
+        # TODO 使う
+        if start_date:
+            queryset = queryset.filter(created_at__gte=start_date)
+        return queryset
 
     def order_queryset_by_created_at_desc(self, queryset):
         return queryset.order_by("-created_at")
@@ -57,13 +86,11 @@ class PostListCreateView(BasePostListView, ListCreateAPIView):
     def get_queryset(self):
         queryset = self.queryset.prefetch_related("images").select_related("repost_of")
 
-        user_id = self.get_user_id_from_request()
-        if user_id:
-            queryset = queryset.filter(author__id=user_id)
+        queryset = self.filter_by_user_id(queryset, self.get_user_id())
+                                    
+        queryset = self.filter_by_reply_to(queryset, self.request.query_params.get("reply_to", None))
 
-        reply_to_id = self.request.query_params.get("reply_to", None)
-        if reply_to_id:
-            queryset = queryset.filter(reply_to=reply_to_id)
+        queryset = self.filter_by_search(queryset, self.get_search_word())
 
         return self.order_queryset_by_created_at_desc(queryset)
 
@@ -78,7 +105,7 @@ class LikedPostListAPIView(BasePostListView):
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        user_id = self.get_user_id_from_request()
+        user_id = self.get_user_id()
 
         if not user_id:
             return []
@@ -88,10 +115,10 @@ class LikedPostListAPIView(BasePostListView):
 
 
 class MediaPostListAPIView(BasePostListView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
-        user_id = self.get_user_id_from_request()
+        user_id = self.get_user_id()
 
         if not user_id:
             return []
@@ -101,16 +128,24 @@ class MediaPostListAPIView(BasePostListView):
 
 
 class RepliedPostListAPIView(BasePostListView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
-        user_id = self.get_user_id_from_request()
+        user_id = self.get_user_id()
 
         if not user_id:
             return []
 
         replied_posts = Post.objects.filter(reply_to__isnull=False, author=user_id)
         return self.order_queryset_by_created_at_desc(replied_posts)
+
+class FollowingPostsListAPIView(BasePostListView):
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Post.objects.all()
+        following_users = user.following.values_list('following', flat=True)
+        return queryset.filter(author__in=following_users)
+
 
 
 class RepostAPIView(APIView):
