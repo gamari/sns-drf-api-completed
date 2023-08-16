@@ -52,7 +52,7 @@ class RepostSerializer(BasePostSerializer):
             "is_reposted",
             "images",
         ]
-        depth = 2
+        depth = 1
 
 
 class ReplySerializer(BasePostSerializer):
@@ -69,7 +69,7 @@ class ReplySerializer(BasePostSerializer):
             "is_reposted",
             "images",
         ]
-        depth = 2
+        depth = 1
 
 
 class PostSerializer(BasePostSerializer):
@@ -96,7 +96,7 @@ class PostSerializer(BasePostSerializer):
             "reply_to",
             "replies_count",
         ]
-        depth = 2
+        depth = 1
 
     def create(self, validated_data):
         user = self._get_user_from_context()
