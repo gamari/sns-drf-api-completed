@@ -41,6 +41,9 @@ class PostRetrieveDestroyView(RetrieveDestroyAPIView):
         return [IsAuthenticated()]
 
 
+# TODO BaseListAPIViewを作る
+
+
 class PostListCreateView(ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -78,7 +81,7 @@ class LikedPostListAPIView(ListAPIView):
             return []
 
         # TODO Likeの作成日順で並び替えたい
-
+        print(user_id)
         liked_posts = queryset.filter(like__user_id=user_id).order_by("-created_at")
 
         return liked_posts
