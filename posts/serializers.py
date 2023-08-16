@@ -51,6 +51,7 @@ class RepostSerializer(BasePostSerializer):
             "is_liked",
             "is_reposted",
             "images",
+            "reposts_count"
         ]
         depth = 1
 
@@ -68,6 +69,7 @@ class ReplySerializer(BasePostSerializer):
             "is_liked",
             "is_reposted",
             "images",
+            "reposts_count"
         ]
         depth = 1
 
@@ -92,6 +94,7 @@ class PostSerializer(BasePostSerializer):
             "likes_count",
             "is_liked",
             "repost_of",
+            "reposts_count",
             "is_reposted",
             "reply_to",
             "replies_count",

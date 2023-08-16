@@ -39,6 +39,10 @@ class Post(models.Model):
     @property
     def replies_count(self):
         return self.replies.count()
+    
+    @property
+    def reposts_count(self):
+        return self.reposts.count()
 
     def is_liked_by_user(self, user):
         return self.like_set.filter(user=user).exists()
