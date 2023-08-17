@@ -1,12 +1,12 @@
 import os
+from decouple import config
+
 from datetime import timedelta
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-vnn!3fzdzrg+2u0i1f84x%2!moova5@n+ykwj$g$()#-*-l5pk"
-
-DEBUG = True
+SECRET_KEY = config("SECRET_KEY")
 
 ALLOWED_HOSTS = ["localhost", "0.0.0.0"]
 
@@ -53,8 +53,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
-
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
@@ -92,17 +90,22 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 
-# Database
+# データベース
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('MYSQL_DATABASE'),
+        'USER': config('MYSQL_USER'),
+        'PASSWORD': config('MYSQL_PASSWORD'),
+        'HOST': 'db',
+        'PORT': '3306',
     }
 }
 
 
-# Password validation
+
+# パスワード検証
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -120,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
+# 国際化
 
 LANGUAGE_CODE = "ja"
 TIME_ZONE = "Asia/Tokyo"
@@ -129,7 +132,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# ファイル関係
 
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
