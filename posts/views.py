@@ -50,6 +50,10 @@ class BasePostListView(ListAPIView):
     
     def get_search_word(self):
         return self.request.query_params.get("word", None)
+    
+    def get_reply_to_id(self):
+        print(self.request.query_params)
+        return self.request.query_params.get("reply_to", None)
 
 
 
@@ -58,6 +62,7 @@ class PostListCreateView(BasePostListView, ListCreateAPIView):
         builder = PostQueryBuilder()\
             .prefetch_related("images")\
             .filter_by_user_id(self.get_user_id())\
+            .filter_by_reply_to(self.get_reply_to_id())\
             .order_by_created_at_desc()
         
         return builder.build()    
@@ -67,7 +72,7 @@ class PostListCreateView(BasePostListView, ListCreateAPIView):
             return [AllowAny()]
         return [IsAuthenticated()]
 
-
+# TODO ここらへんまとめたい
 class LikedPostListAPIView(BasePostListView):
     permission_classes = [AllowAny]
 
@@ -98,7 +103,6 @@ class MediaPostListAPIView(BasePostListView):
 
         return builder.build()
 
-
 class RepliedPostListAPIView(BasePostListView):
     permission_classes = [AllowAny]
 
@@ -108,6 +112,7 @@ class RepliedPostListAPIView(BasePostListView):
         if not user_id:
             return []
 
+        print(user_id)
         builder = PostQueryBuilder()\
             .filter_by_reply(user_id)\
             .order_by_created_at_desc()

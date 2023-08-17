@@ -100,6 +100,10 @@ DATABASES = {
         'PASSWORD': config('MYSQL_PASSWORD'),
         'HOST': 'db',
         'PORT': '3306',
+        # TODO 分けたほうが良い
+        'TEST': {
+            'MIRROR': "default",
+        },
     }
 }
 
