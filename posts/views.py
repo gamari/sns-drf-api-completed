@@ -6,9 +6,10 @@ from rest_framework.generics import (
     RetrieveDestroyAPIView,
     ListAPIView,
 )
-from rest_framework.permissions import AllowAny, BasePermission, IsAuthenticated
+from rest_framework.permissions import AllowAny,  IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from posts.permissions import IsOwnerOrReadOnly
 
 from posts.query import PostQueryBuilder
 
@@ -16,12 +17,7 @@ from .models import Post
 from .serializers import PostSerializer, RepostSerializer
 
 
-class IsOwnerOrReadOnly(BasePermission):
-    def has_object_permission(self, request, view, obj):
-        if request.method in ["GET", "HEAD", "OPTIONS"]:
-            return True
 
-        return obj.author == request.user
 
 
 class PostRetrieveDestroyView(RetrieveDestroyAPIView):
