@@ -40,7 +40,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=30, unique=True)
     profile_image = models.ImageField(upload_to="profiles/", blank=True, null=True)
     header_image = models.ImageField(upload_to="headers/", blank=True, null=True)
-    bio = models.TextField(blank=True)
+    bio = models.TextField(blank=True, null=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
