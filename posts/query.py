@@ -18,6 +18,11 @@ class PostQueryBuilder(object):
         if user_id:
             self.queryset = self.queryset.filter(author__id=user_id)
         return self
+    
+    def filter_by_word(self, word):
+        if word:
+            self.queryset = self.queryset.filter(content__icontains=word)
+        return self
 
     def filter_by_reply_to(self, reply_to_id):
         if reply_to_id:

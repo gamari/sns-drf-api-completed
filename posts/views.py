@@ -48,6 +48,9 @@ class BasePostListView(ListAPIView):
     def get_user_id(self):
         return self.request.query_params.get("user_id", None)
     
+    def get_word(self):
+        return self.request.query_params.get("word", None)
+    
     def get_search_word(self):
         return self.request.query_params.get("word", None)
     
@@ -63,6 +66,7 @@ class PostListCreateView(BasePostListView, ListCreateAPIView):
             .prefetch_related("images")\
             .filter_by_user_id(self.get_user_id())\
             .filter_by_reply_to(self.get_reply_to_id())\
+            .filter_by_word(self.get_word())\
             .order_by_created_at_desc()
         
         return builder.build()    
