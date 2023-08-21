@@ -117,6 +117,7 @@ class PostSerializer(BasePostSerializer):
             post_image_instances = [
                 PostImage.objects.create(**image_data) for image_data in images_data
             ]
+            print(post_image_instances)
             post.images.set(post_image_instances)
 
         return post
