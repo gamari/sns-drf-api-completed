@@ -8,8 +8,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 
-ALLOWED_HOSTS = ["localhost", "0.0.0.0"]
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -92,6 +90,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # データベース
 
+# TODO .env のモードで切り分ける
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -100,7 +99,6 @@ DATABASES = {
         'PASSWORD': config('MYSQL_PASSWORD'),
         'HOST': 'db',
         'PORT': '3306',
-        # TODO 分けたほうが良い
         'TEST': {
             'MIRROR': "default",
         },
