@@ -109,16 +109,13 @@ class PostSerializer(BasePostSerializer):
         images_data = validated_data.pop("images", [])
         logger.debug(f"User from context: {user}")
         logger.debug(f"Images data: {images_data}")
-        print(images_data)
 
         post = Post.objects.create(author=user, **validated_data)
 
         if "repost_of" not in validated_data:
-            print(images_data[0])
             post_image_instances = [
                 PostImage.objects.create(**image_data) for image_data in images_data
             ]
-            print(post_image_instances[0])
             post.images.set(post_image_instances)
 
         return post
