@@ -1,6 +1,7 @@
 from .base import *
 
 print("production")
+print(BASE_DIR)
 DEBUG = False
-ALLOWED_HOSTS = ["localhost", "0.0.0.0"]
+ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_ALL_ORIGINS=True
