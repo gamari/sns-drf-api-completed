@@ -7,7 +7,9 @@ from decouple import config
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', f"config.settings.{config('MODE', 'local')}")
+    url = f"config.settings.{config('MODE', 'local')}"
+    print(url)
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', url)
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

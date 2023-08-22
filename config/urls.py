@@ -12,6 +12,7 @@ urlpatterns = [
     path("posts/", include("posts.urls")),
     path("accounts/", include("accounts.urls")),
     path("likes/", include("likes.urls")),
+    path("ai/", include("ai.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

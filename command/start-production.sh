@@ -1,1 +1,1 @@
-gunicorn config.wsgi:application --bind 0.0.0.0:8000 --env MODE=production
+gunicorn config.wsgi:application --bind 0.0.0.0:8000 --env DJANGO_SETTINGS_MODULE=config.settings.development
