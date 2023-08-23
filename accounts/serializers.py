@@ -1,14 +1,17 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+import re
+
+from rest_framework.serializers import ModelSerializer, SerializerMethodField, ValidationError
 
 from follows.models import Follow
 
-from .models import Account
+from accounts.models import Account
 
 
 class AccountSerializer(ModelSerializer):
     is_following = SerializerMethodField()
     followers_count = SerializerMethodField()
     following_count = SerializerMethodField()
+
 
     class Meta:
         model = Account
@@ -29,6 +32,25 @@ class AccountSerializer(ModelSerializer):
             "email": {"write_only": True, "required": False},
             "user_id": {"required": False},
         }
+    
+    def validate_user_id(self, value):
+        if len(value) > 20:
+            raise ValidationError("user_idは20文字以下である必要があります。")
+        if not re.match("^[a-zA-Z0-9!@#$%^&*(),.?\":{}|<>]+$", value):
+            raise ValidationError("user_idは半角数字・半角英語・記号のみ可能です。")
+        return value
+
+    def validate_username(self, value):
+        if len(value) > 5:
+            raise ValidationError("usernameは20文字以下である必要があります。")
+        return value
+
+    def validate_password(self, value):
+        if len(value) > 24:
+            raise ValidationError("パスワードは24文字以下である必要があります。")
+        if not re.match("^[a-zA-Z0-9!@#$%^&*(),.?\":{}|<>]+$", value):
+            raise ValidationError("パスワードは半角数字・半角英語・記号のみ可能です。")
+        return value
 
     def create(self, validated_data):
         password = validated_data.pop("password", None)

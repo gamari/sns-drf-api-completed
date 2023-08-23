@@ -123,7 +123,7 @@ class RepliedPostListAPIView(BasePostListView):
 
         return builder.build()
 
-class FollowingPostsListAPIView(BasePostListView):
+class FollowingPostListAPIView(BasePostListView):
     def get_queryset(self):
         user = self.request.user
 

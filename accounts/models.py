@@ -41,6 +41,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     profile_image = models.ImageField(upload_to="profiles/", blank=True, null=True)
     header_image = models.ImageField(upload_to="headers/", blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
+    is_ai = models.BooleanField(default=False)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

@@ -107,8 +107,6 @@ class PostSerializer(BasePostSerializer):
     def create(self, validated_data):
         user = self._get_user_from_context()
         images_data = validated_data.pop("images", [])
-        logger.debug(f"User from context: {user}")
-        logger.debug(f"Images data: {images_data}")
 
         post = Post.objects.create(author=user, **validated_data)
 

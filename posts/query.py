@@ -1,3 +1,4 @@
+import datetime
 from django.db.models import Q
 
 from posts.models import Post
@@ -17,6 +18,14 @@ class PostQueryBuilder(object):
     def filter_by_user_id(self, user_id):
         if user_id:
             self.queryset = self.queryset.filter(author__id=user_id)
+        return self
+    
+    def filter_by_created_at(self, created_at):
+        if created_at:
+            self.queryset = self.queryset.filter(created_at__lte=created_at)
+        else:
+            now = datetime.now()
+            self.queryset = self.queryset.filter(created_at__lte=now)
         return self
     
     def filter_by_word(self, word):

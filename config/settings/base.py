@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "posts",
     "likes",
     "follows",
+    "ai",
 ]
 
 AUTH_USER_MODEL = "accounts.Account"
