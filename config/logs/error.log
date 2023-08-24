@@ -1,0 +1,186 @@
+[WARNING] [2023-08-24 21:50:10,318 log]
+  Unauthorized: /auth/jwt/create/
+[WARNING] [2023-08-24 21:50:10,319 basehttp]
+  "POST /auth/jwt/create/ HTTP/1.1" 401 63
+[WARNING] [2023-08-24 21:50:12,627 log]
+  Unauthorized: /auth/jwt/create/
+[WARNING] [2023-08-24 21:50:12,628 basehttp]
+  "POST /auth/jwt/create/ HTTP/1.1" 401 63
+[WARNING] [2023-08-24 21:52:41,796 log]
+  Unauthorized: /auth/jwt/create/
+[WARNING] [2023-08-24 21:52:41,797 basehttp]
+  "POST /auth/jwt/create/ HTTP/1.1" 401 63
+[WARNING] [2023-08-24 21:56:50,906 log]
+  Not Found: /media/post_images/author_At6Ujgz.png
+[WARNING] [2023-08-24 21:56:50,908 log]
+  Not Found: /media/post_images/author_P8o6qs9.png
+[WARNING] [2023-08-24 21:56:50,910 log]
+  Not Found: /media/post_images/author_x9I8Xgm.png
+[WARNING] [2023-08-24 21:56:50,911 basehttp]
+  "GET /media/post_images/author_At6Ujgz.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 21:56:50,912 basehttp]
+  "GET /media/post_images/author_x9I8Xgm.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 21:56:50,913 basehttp]
+  "GET /media/post_images/author_P8o6qs9.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:01:12,183 log]
+  Not Found: /media/post_images/author_x9I8Xgm.png
+[WARNING] [2023-08-24 22:01:12,186 log]
+  Not Found: /media/post_images/author_At6Ujgz.png
+[WARNING] [2023-08-24 22:01:12,187 basehttp]
+  "GET /media/post_images/author_x9I8Xgm.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:01:12,189 basehttp]
+  "GET /media/post_images/author_At6Ujgz.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:06:08,839 log]
+  Not Found: /media/post_images/author_P8o6qs9.png
+[WARNING] [2023-08-24 22:06:08,843 log]
+  Not Found: /media/post_images/author_x9I8Xgm.png
+[WARNING] [2023-08-24 22:06:08,845 basehttp]
+  "GET /media/post_images/author_P8o6qs9.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:06:08,848 log]
+  Not Found: /media/post_images/author_At6Ujgz.png
+[WARNING] [2023-08-24 22:06:08,851 basehttp]
+  "GET /media/post_images/author_x9I8Xgm.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:06:08,853 basehttp]
+  "GET /media/post_images/author_At6Ujgz.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:10:57,429 log]
+  Not Found: /media/post_images/author_x9I8Xgm.png
+[WARNING] [2023-08-24 22:10:57,431 log]
+  Not Found: /media/post_images/author_At6Ujgz.png
+[WARNING] [2023-08-24 22:10:57,431 basehttp]
+  "GET /media/post_images/author_x9I8Xgm.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:10:57,432 basehttp]
+  "GET /media/post_images/author_At6Ujgz.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:10:59,904 log]
+  Not Found: /media/post_images/author_P8o6qs9.png
+[WARNING] [2023-08-24 22:10:59,906 basehttp]
+  "GET /media/post_images/author_P8o6qs9.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:10:59,914 log]
+  Not Found: /media/post_images/sns1.jpg
+[WARNING] [2023-08-24 22:10:59,915 basehttp]
+  "GET /media/post_images/sns1.jpg HTTP/1.1" 404 3823
+[WARNING] [2023-08-24 22:17:58,842 log]
+  Not Found: /media/post_images/sns1.jpg
+[WARNING] [2023-08-24 22:17:58,844 log]
+  Not Found: /media/post_images/author_P8o6qs9.png
+[WARNING] [2023-08-24 22:17:58,845 basehttp]
+  "GET /media/post_images/sns1.jpg HTTP/1.1" 404 3823
+[WARNING] [2023-08-24 22:17:58,845 basehttp]
+  "GET /media/post_images/author_P8o6qs9.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:18:01,397 log]
+  Not Found: /media/post_images/author_0kFzqcX.png
+[WARNING] [2023-08-24 22:18:01,401 log]
+  Not Found: /media/post_images/Feather_icon_pen_l6YR8MO.png
+[WARNING] [2023-08-24 22:18:01,401 basehttp]
+  "GET /media/post_images/author_0kFzqcX.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:18:01,402 basehttp]
+  "GET /media/post_images/Feather_icon_pen_l6YR8MO.png HTTP/1.1" 404 3903
+[WARNING] [2023-08-24 22:25:46,078 log]
+  Not Found: /media/post_images/sns1.jpg
+[WARNING] [2023-08-24 22:25:46,084 log]
+  Not Found: /media/post_images/author_At6Ujgz.png
+[WARNING] [2023-08-24 22:25:46,085 basehttp]
+  "GET /media/post_images/sns1.jpg HTTP/1.1" 404 3823
+[WARNING] [2023-08-24 22:25:46,086 log]
+  Not Found: /media/post_images/author_x9I8Xgm.png
+[WARNING] [2023-08-24 22:25:46,089 log]
+  Not Found: /media/post_images/author_P8o6qs9.png
+[WARNING] [2023-08-24 22:25:46,090 basehttp]
+  "GET /media/post_images/author_At6Ujgz.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:25:46,092 basehttp]
+  "GET /media/post_images/author_x9I8Xgm.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:25:46,093 basehttp]
+  "GET /media/post_images/author_P8o6qs9.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:26:18,252 log]
+  Not Found: /media/post_images/author_x9I8Xgm.png
+[WARNING] [2023-08-24 22:26:18,259 log]
+  Not Found: /media/post_images/author_At6Ujgz.png
+[WARNING] [2023-08-24 22:26:18,259 basehttp]
+  "GET /media/post_images/author_x9I8Xgm.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:26:18,261 log]
+  Not Found: /media/post_images/author_P8o6qs9.png
+[WARNING] [2023-08-24 22:26:18,265 basehttp]
+  "GET /media/post_images/author_P8o6qs9.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:26:18,266 basehttp]
+  "GET /media/post_images/author_At6Ujgz.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:26:18,268 log]
+  Not Found: /media/post_images/sns1.jpg
+[WARNING] [2023-08-24 22:26:18,270 basehttp]
+  "GET /media/post_images/sns1.jpg HTTP/1.1" 404 3823
+[WARNING] [2023-08-24 22:26:44,100 log]
+  Not Found: /media/post_images/author_At6Ujgz.png
+[WARNING] [2023-08-24 22:26:44,104 log]
+  Not Found: /media/post_images/author_P8o6qs9.png
+[WARNING] [2023-08-24 22:26:44,105 basehttp]
+  "GET /media/post_images/author_At6Ujgz.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:26:44,106 log]
+  Not Found: /media/post_images/author_x9I8Xgm.png
+[WARNING] [2023-08-24 22:26:44,107 basehttp]
+  "GET /media/post_images/author_P8o6qs9.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:26:44,108 basehttp]
+  "GET /media/post_images/author_x9I8Xgm.png HTTP/1.1" 404 3863
+[WARNING] [2023-08-24 22:47:31,723 log]
+  Not Found: /media/post_images/Feather_icon_pen_l6YR8MO.png
+[WARNING] [2023-08-24 22:47:31,725 basehttp]
+  "GET /media/post_images/Feather_icon_pen_l6YR8MO.png HTTP/1.1" 404 3903
+[ERROR] [2023-08-24 23:03:57,664 log]
+  Internal Server Error: /posts/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/workspaces/sns-api/posts/views.py", line 64, in get_queryset
+    builder = PostQueryBuilder()\
+TypeError: filter_by_created_at() missing 1 required positional argument: 'start_date'
+[ERROR] [2023-08-24 23:03:57,670 basehttp]
+  "GET /posts/?page=1 HTTP/1.1" 500 98014
+[ERROR] [2023-08-24 23:05:02,521 log]
+  Internal Server Error: /posts/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/workspaces/sns-api/posts/views.py", line 64, in get_queryset
+    builder = PostQueryBuilder()\
+  File "/workspaces/sns-api/posts/query.py", line 50, in filter_by_created_at
+    self.queryset = self.queryset.filter(created_at__lte=datetime.now())
+AttributeError: module 'datetime' has no attribute 'now'
+[ERROR] [2023-08-24 23:05:02,534 basehttp]
+  "GET /posts/?page=1 HTTP/1.1" 500 101774
+[WARNING] [2023-08-24 23:14:07,070 log]
+  Not Found: /admin/login/
+[WARNING] [2023-08-24 23:14:07,072 basehttp]
+  "POST /admin/login/?next=/admin/ HTTP/1.1" 404 3486

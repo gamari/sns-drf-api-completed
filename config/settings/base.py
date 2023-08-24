@@ -106,6 +106,54 @@ DATABASES = {
     }
 }
 
+# ログ
+
+LOGGING_DIR = os.path.join(BASE_DIR, 'logs')
+
+if not os.path.exists(LOGGING_DIR):
+    os.makedirs(LOGGING_DIR)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{levelname}] [{asctime} {module}]\n  {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'error_file': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'error.log'),
+            'formatter': 'verbose',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'error_file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'rest_framework': {
+            'handlers': ['console', 'error_file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
+
+
 
 
 # パスワード検証
@@ -142,6 +190,6 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR)
 , "media")
 
-# Default primary key field type
+# キー設定
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

@@ -1,4 +1,5 @@
-import datetime
+from datetime import datetime
+
 from django.db.models import Q
 
 from posts.models import Post
@@ -22,6 +23,7 @@ class PostQueryBuilder(object):
     
     def filter_by_created_at(self, created_at):
         if created_at:
+            # TODO 現在より未来は指定できないようにする
             self.queryset = self.queryset.filter(created_at__lte=created_at)
         else:
             now = datetime.now()
@@ -43,9 +45,11 @@ class PostQueryBuilder(object):
             self.queryset = self.queryset.filter(Q(content__icontains=keyword))
         return self
 
-    def filter_by_created_at(self, start_date):
+    def filter_by_created_at(self, start_date=None):
         if start_date:
-            self.queryset = self.queryset.filter(created_at__gte=start_date)
+            self.queryset = self.queryset.filter(created_at__lte=start_date)
+        else:
+            self.queryset = self.queryset.filter(created_at__lte=datetime.now())
         return self
 
     def filter_by_liked_user(self, user_id):
