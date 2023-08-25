@@ -6,3 +6,4 @@ db.sqlite3
 nginx.conf
 .env
 .env
+config/logs/**

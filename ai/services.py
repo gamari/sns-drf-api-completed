@@ -1,4 +1,5 @@
 import openai
+
 from decouple import config
 
 openai.api_key = config("OPEN_AI_KEY")
