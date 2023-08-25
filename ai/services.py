@@ -1,10 +1,10 @@
 import openai
+import re
 
 from decouple import config
 
 openai.api_key = config("OPEN_AI_KEY")
 
-# TODO 動かない
 def generate_tweets(num_tweets=3):
     tweets = []
 
@@ -13,19 +13,21 @@ def generate_tweets(num_tweets=3):
         messages=[
             {
             "role": "user",
-            "content": f"{num_tweets}個のツイートを作成してください。ただし、ツイート間には「---」を入れて仕切りをつけてください。連番はつけないでください。emotionは使ってはいけません。"
+            "content": f"{num_tweets}個のツイートを作成してください。ただし、ツイート間には「---」を入れて仕切りをつけてください。連番はつけないでください。80文字以下にしてください。emotionは使ってはいけません。"
             }
         ],
         temperature=1,
         top_p=1,
         frequency_penalty=0,
         presence_penalty=0,
-        max_tokens=280*num_tweets,
+        max_tokens=150*num_tweets,
     )
 
+    # リファクタリングする
     generated_content = response.choices[0].message.content.strip().split("---")
-    print(generate_tweets)
-    for tweet in generated_content:
+    cleaned_texts = [re.sub(r'^\s*\d+\.\s*', '', text) for text in generated_content]
+
+    for tweet in cleaned_texts:
         if tweet:
             tweets.append(tweet)
 

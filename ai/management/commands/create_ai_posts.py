@@ -4,6 +4,7 @@ from accounts.models import Account
 import random
 from faker import Faker
 
+from ai.services import generate_tweets
 from posts.models import Post
 
 fake = Faker('ja_JP')
@@ -12,7 +13,8 @@ class Command(BaseCommand):
     help = 'AIユーザーを3ユーザー作成する。'
 
     def handle(self, *args, **kwargs):
-        for _ in range(3):
+        posts = generate_tweets()
+        for post_item in posts:
             ai_users = Account.objects.filter(is_ai=True)
             if not ai_users.exists():
                 self.stdout.write(self.style.ERROR('No AI users found.'))
@@ -20,14 +22,15 @@ class Command(BaseCommand):
 
             ai_user = random.choice(ai_users)
             
-            post_content = fake.text(max_nb_chars=200)  
             post = Post(
                 author=ai_user,
-                content=post_content
+                content=post_item
             )
             post.save()
 
-            random_minutes = random.randint(0, 3 * 24 * 60)
+            #  TODO
+            # random_minutes = random.randint(0, 3 * 24 * 60)
+            random_minutes = random.randint(0, 5)
             post.created_at = datetime.now() + timedelta(minutes=random_minutes)
             post.save()
 

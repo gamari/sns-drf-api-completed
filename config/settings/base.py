@@ -150,6 +150,10 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'all': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
     },
 }
 
