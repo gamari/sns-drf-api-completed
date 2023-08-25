@@ -13,7 +13,8 @@ class Command(BaseCommand):
     help = 'AIユーザーを3ユーザー作成する。'
 
     def handle(self, *args, **kwargs):
-        posts = generate_tweets()
+        posts = generate_tweets(20)
+
         for post_item in posts:
             ai_users = Account.objects.filter(is_ai=True)
             if not ai_users.exists():
@@ -28,9 +29,8 @@ class Command(BaseCommand):
             )
             post.save()
 
-            #  TODO
-            # random_minutes = random.randint(0, 3 * 24 * 60)
-            random_minutes = random.randint(0, 5)
+            random_minutes = random.randint(0, 1 * 24 * 60)
+            # random_minutes = random.randint(0, 5)
             post.created_at = datetime.now() + timedelta(minutes=random_minutes)
             post.save()
 
