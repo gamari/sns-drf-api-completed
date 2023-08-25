@@ -13,7 +13,7 @@ def generate_tweets(num_tweets=3):
         messages=[
             {
             "role": "user",
-            "content": f"{num_tweets}個のツイートを作成してください。ただし、ツイート間には「---」を入れて仕切りをつけてください。連番はつけないでください。80文字以下にしてください。emotionは使ってはいけません。"
+            "content": f"{num_tweets}個のツイートを作成してください。ただし、ツイート間には「---」を入れて仕切りをつけてください。連番はつけないでください。30文字以下にしてください。emotionは使ってはいけません。"
             }
         ],
         temperature=1,
