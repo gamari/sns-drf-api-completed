@@ -13,9 +13,9 @@ services:
     command: --default-authentication-plugin=caching_sha2_password
     volumes:
       - db_data:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
     ports:
       - "3306:3306"
-    mem_limit: 300m
   web:
     build: .
     command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --env DJANGO_SETTINGS_MODULE=config.settings.${MODE}
@@ -26,7 +26,6 @@ services:
       - "8000:8000"
     depends_on:
       - db
-    mem_limit: 200m
   nginx:
     image: nginx:latest
     ports:
@@ -39,6 +38,5 @@ services:
       - /etc/letsencrypt/live/gamari-devs.com/privkey.pem:/etc/nginx/certs/privkey.pem
     depends_on:
       - web
-    mem_limit: 100m
 volumes:
   db_data:
