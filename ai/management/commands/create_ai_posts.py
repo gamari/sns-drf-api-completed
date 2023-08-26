@@ -10,15 +10,20 @@ from posts.models import Post
 fake = Faker('ja_JP')
 
 class Command(BaseCommand):
-    help = 'AIユーザーを3ユーザー作成する。'
+    help = 'AIユーザーの投稿を作成する。'
+    
+    def add_arguments(self, parser):
+        parser.add_argument('tweets_count', type=int, nargs='?', default=5)
 
     def handle(self, *args, **kwargs):
-        posts = generate_tweets(20)
+        tweets_count = kwargs.get('tweets_count', 5)
+        
+        posts = generate_tweets(tweets_count)
 
         for post_item in posts:
             ai_users = Account.objects.filter(is_ai=True)
             if not ai_users.exists():
-                self.stdout.write(self.style.ERROR('No AI users found.'))
+                self.stdout.write(self.style.ERROR('ユーザーがいません'))
                 return
 
             ai_user = random.choice(ai_users)
